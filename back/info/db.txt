@@ -1,0 +1,118 @@
+create table users
+(
+    id         bigserial
+        primary key,
+    name       varchar,
+    email      varchar,
+    password   varchar,
+    created_at timestamp(6) not null,
+    updated_at timestamp(6) not null
+);
+
+create table dictionaries
+(
+    id         bigserial
+        primary key,
+    user_id    bigint       not null
+        constraint fk_rails_b6534f6a6d
+            references users,
+    created_at timestamp(6) not null,
+    updated_at timestamp(6) not null
+);
+
+create index index_dictionaries_on_user_id
+    on dictionaries (user_id);
+
+
+create table contents
+(
+    id            bigserial
+        primary key,
+    content       varchar,
+    translate     varchar,
+    dictionary_id bigint       not null
+        constraint fk_rails_ba8aeb376f
+            references dictionaries,
+    created_at    timestamp(6) not null,
+    updated_at    timestamp(6) not null
+);
+
+create index index_contents_on_dictionary_id
+    on contents (dictionary_id);
+
+
+create table tags
+(
+    id            bigserial
+        primary key,
+    name          varchar,
+    dictionary_id bigint       not null
+        constraint fk_rails_76a17cd711
+            references dictionaries,
+    created_at    timestamp(6) not null,
+    updated_at    timestamp(6) not null
+);
+
+create index index_tags_on_dictionary_id
+    on tags (dictionary_id);
+
+
+create table tag_contents
+(
+    id         bigserial
+        primary key,
+    tag_id     bigint       not null
+        constraint fk_rails_06d62609e1
+            references tags,
+    content_id bigint       not null
+        constraint fk_rails_5280e8e0ff
+            references contents,
+    created_at timestamp(6) not null,
+    updated_at timestamp(6) not null
+);
+
+create index index_tag_contents_on_tag_id
+    on tag_contents (tag_id);
+
+create index index_tag_contents_on_content_id
+    on tag_contents (content_id);
+
+
+create table themes
+(
+    id            bigserial
+        primary key,
+    name          varchar,
+    dictionary_id bigint       not null
+        constraint fk_rails_d6e5849ad4
+            references dictionaries,
+    theme_id      bigint       not null
+        constraint fk_rails_4a388fd983
+            references themes,
+    created_at    timestamp(6) not null,
+    updated_at    timestamp(6) not null
+);
+
+create index index_themes_on_dictionary_id
+    on themes (dictionary_id);
+
+
+create table theme_contents
+(
+    id         bigserial
+        primary key,
+    theme_id   bigint       not null
+        constraint fk_rails_551ddb1921
+            references themes,
+    content_id bigint       not null
+        constraint fk_rails_02e55fced4
+            references contents,
+    created_at timestamp(6) not null,
+    updated_at timestamp(6) not null
+);
+
+create index index_theme_contents_on_theme_id
+    on theme_contents (theme_id);
+
+create index index_theme_contents_on_content_id
+    on theme_contents (content_id)
