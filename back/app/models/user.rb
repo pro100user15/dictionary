@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_secure_token :access_code, length: 30
 
   validates :name,
             :presence => true,

@@ -14,7 +14,7 @@ class Api::UserController < ApplicationController
 
   def create
     # Create a new user
-    user = User.new(user_params)
+    user = User.new(user_create)
     if user.save
       render json: user, status: :created
     else
@@ -41,8 +41,13 @@ class Api::UserController < ApplicationController
 
   private
 
-  def user_params
+  def user_create
     params.require(:user).permit(:name, :email, :password, :birthday)
   end
+
+  # def user_login
+  #   params.require(:email)
+  #   params.require(:password)
+  # end
 
 end
