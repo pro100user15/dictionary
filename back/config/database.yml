@@ -87,7 +87,3 @@ test:
 production:
   <<: *default
   database: back_production
-  username: postgres
-  password: root
-  host: localhost
-  port: 5432
