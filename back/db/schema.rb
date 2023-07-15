@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_13_164810) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_13_164921) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,6 +20,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_13_164810) do
     t.bigint "dictionary_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "theme_id"
     t.index ["dictionary_id"], name: "index_contents_on_dictionary_id"
   end
 
@@ -47,19 +48,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_13_164810) do
     t.index ["dictionary_id"], name: "index_tags_on_dictionary_id"
   end
 
-  create_table "theme_contents", force: :cascade do |t|
-    t.bigint "theme_id", null: false
-    t.bigint "content_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["content_id"], name: "index_theme_contents_on_content_id"
-    t.index ["theme_id"], name: "index_theme_contents_on_theme_id"
-  end
-
   create_table "themes", force: :cascade do |t|
     t.string "name"
     t.bigint "dictionary_id", null: false
-    t.bigint "theme_id", null: false
+    t.bigint "theme_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["dictionary_id"], name: "index_themes_on_dictionary_id"
@@ -77,12 +69,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_13_164810) do
   end
 
   add_foreign_key "contents", "dictionaries"
+  add_foreign_key "contents", "themes"
   add_foreign_key "dictionaries", "users"
   add_foreign_key "tag_contents", "contents"
   add_foreign_key "tag_contents", "tags"
   add_foreign_key "tags", "dictionaries"
-  add_foreign_key "theme_contents", "contents"
-  add_foreign_key "theme_contents", "themes"
   add_foreign_key "themes", "dictionaries"
   add_foreign_key "themes", "themes"
 end

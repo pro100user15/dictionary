@@ -15,7 +15,10 @@ class Api::UserController < ApplicationController
   def create
     # Create a new user
     user = User.new(user_create)
+    dictionary = Dictionary.new()
     if user.save
+      dictionary.user = user
+      dictionary.save
       render json: user, status: :created
     else
       render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
@@ -25,7 +28,7 @@ class Api::UserController < ApplicationController
   def update
     # Update an existing user
     user = User.find(params[:id])
-    if user.update(user_params)
+    if user.update(user_update)
       render json: user
     else
       render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
@@ -43,6 +46,10 @@ class Api::UserController < ApplicationController
 
   def user_create
     params.require(:user).permit(:name, :email, :password, :birthday)
+  end
+
+  def user_update
+    params.require(:user).permit(:name, :birthday)
   end
 
   # def user_login

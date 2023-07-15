@@ -1,6 +1,6 @@
 class Theme < ApplicationRecord
   belongs_to :dictionary
-  belongs_to :theme
+  belongs_to :theme, optional: true
 
   validates :dictionary,
             :presence => true
