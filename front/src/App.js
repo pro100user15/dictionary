@@ -1,25 +1,67 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider as ReduxStateProvider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { createTheme, ThemeProvider } from '@mui/material';
+import store, { persist } from './redux/store';
+import { ToastContainer } from 'react-toastify';
+import AppRoutes from './routes/app.routes';
 
-function App() {
+import 'react-toastify/dist/ReactToastify.css';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      light: '#757ce8',
+      main: '#0052fe',
+      dark: '#002884',
+      contrastText: '#fff'
+    },
+    secondary: {
+      light: '#ff7961',
+      main: '#f44336',
+      dark: '#ba000d',
+      contrastText: '#000'
+    }
+  },
+  typography: {
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"'
+    ].join(','),
+    button: {
+      textTransform: 'none'
+    }
+  }
+});
+
+const Providers = ({ children }) => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ReduxStateProvider store={store}>
+      <PersistGate loading="loading..." persistor={persist}>
+        <ThemeProvider theme={theme}>
+          <ToastContainer />
+          <BrowserRouter>{children}</BrowserRouter>
+        </ThemeProvider>
+      </PersistGate>
+    </ReduxStateProvider>
   );
-}
+};
+
+const App = () => {
+  return (
+    <Providers>
+      <AppRoutes />
+    </Providers>
+  );
+};
 
 export default App;
