@@ -45,11 +45,11 @@ class Api::UserController < ApplicationController
   private
 
   def user_create
-    params.require(:user).permit(:name, :email, :password, :birthday)
+    params.require(:user).permit(:name, :surname, :email, :password)
   end
 
   def user_update
-    params.require(:user).permit(:name, :birthday)
+    params.require(:user).permit(:name, :surname)
   end
 
   # def user_login
