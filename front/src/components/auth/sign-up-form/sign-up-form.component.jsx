@@ -11,7 +11,7 @@ import {
 import { registrationThunk, selectAuthStateError, setInitialAuthState } from '../../../redux/auth';
 import { getUserInfoViaEmailAndGoogleToken } from '../../../requests/auth.requests';
 import { handleAuthError } from '../../../helper/error-handler/auth-error.handler';
-import { emailValidation, phoneValidation } from '../../../helper/validation/auth.validation';
+import { emailValidation } from '../../../helper/validation/auth.validation';
 import { API_ROUTES, ROUTES } from '../../../App.constants';
 
 const SignUpForm = () => {
@@ -92,24 +92,10 @@ const SignUpForm = () => {
         />
         <CustomTextField
           control={control}
-          name={'username'}
-          rules={{ required: 'Username cannot be empty' }}
-          label={'Username'}
-          error={errors.username}
-        />
-        <CustomTextField
-          control={control}
           name={'email'}
           rules={emailValidation}
           label={'Email'}
           error={errors.email}
-        />
-        <CustomTextField
-          control={control}
-          name={'phone'}
-          rules={phoneValidation}
-          label={'Phone Number'}
-          error={errors.phone}
         />
         <CustomPasswordTextField
           control={control}
@@ -158,11 +144,7 @@ const SignUpForm = () => {
             className="form-link cursor-pointer"
             onClick={() => {
               const values = getValues();
-              const state = values?.email
-                ? { type: 'Email', login: values.email }
-                : values?.username
-                ? { type: 'Username', login: values.username }
-                : undefined;
+              const state = values?.email ? { login: values.email } : undefined;
               navigate(ROUTES.signIn, { state });
             }}>
             Already have an account? Sign In

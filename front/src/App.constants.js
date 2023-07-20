@@ -18,10 +18,13 @@ export const API_ROUTES = {
   loginViaGoogle: `/api/auth/oauth2?redirect_uri=http://localhost:3000${ROUTES.oauth2Redirect}`,
   forgotPassword: (login) => `/api/auth/forgot-password?login=${login}`,
   resetPassword: '/api/auth/reset-password',
-  registration: '/api/auth/registration',
+  registration: '/api/user',
   userInfo: (email, token) => `/api/auth/user?email=${email}&token=${token}`,
   //user
   user: '/api/user',
   userAvatar: '/api/user/avatar',
-  userPassword: '/api/user/password'
+  userPassword: '/api/user/password',
+  //themes
+  adminThemes: '/api/theme_admin',
+  themes: (dictionaryId) => `/api/themes?dictionary=${dictionaryId}`
 };

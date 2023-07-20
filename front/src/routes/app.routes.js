@@ -32,6 +32,7 @@ const AppRoutes = () => {
   useEffect(() => {
     try {
       setLoading(false);
+      const userId = JSON.parse(localStorage.getItem('userId'));
       const auth = JSON.parse(localStorage.getItem('auth'));
       if (auth?.successful) {
         if (!authState?.successful || auth.accessToken !== authState.accessToken) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useForm, useFormState } from 'react-hook-form';
@@ -11,8 +11,6 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 const ForgotPasswordForm = () => {
   const { state } = useLocation();
 
-  const [type, setType] = useState();
-
   const { control, handleSubmit, getValues, setValue } = useForm({
     mode: 'onBlur'
   });
@@ -23,15 +21,10 @@ const ForgotPasswordForm = () => {
 
   useEffect(() => {
     if (state && state.type && state.login) {
-      setType(state.type);
       setValue('login', state.login);
       window.history.replaceState({}, document.title);
     }
   }, []);
-
-  const onChange = () => {
-    setType(undefined);
-  };
 
   const onSubmit = (request) => {
     dispatch(forgotPasswordThunk(request.login));
@@ -51,7 +44,6 @@ const ForgotPasswordForm = () => {
           name={'login'}
           label={'Login'}
           rules={{ required: 'Login cannot be empty' }}
-          onChange={onChange}
           error={errors.login}
         />
         <Button
@@ -81,7 +73,7 @@ const ForgotPasswordForm = () => {
             disableElevation={true}
             onClick={() =>
               navigate(ROUTES.signIn, {
-                state: { type: type, login: getValues('login') }
+                state: { login: getValues('login') }
               })
             }>
             <ChevronLeftIcon />

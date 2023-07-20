@@ -63,6 +63,7 @@ export const registrationThunk = createAsyncThunk(
   async (request, { rejectWithValue }) => {
     try {
       const response = await registrationRequest(request);
+      localStorage.setItem('userId', response.id);
       return response.data;
     } catch (error) {
       if (error.error?.code) {

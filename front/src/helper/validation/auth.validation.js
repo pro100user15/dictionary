@@ -1,5 +1,5 @@
 export const emailValidation = {
-  required: 'Mail cannot be empty',
+  required: 'Email cannot be empty',
   validate: (value) => {
     const regexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     if (!regexp.test(String(value).toLowerCase())) {

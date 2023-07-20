@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm, useFormState } from 'react-hook-form';
-import { Button, Divider, Grid, InputAdornment, Typography } from '@mui/material';
+import { Button, Divider, Grid, Typography } from '@mui/material';
 import {
   CustomCheckBox,
   CustomPasswordTextField,
   CustomTextField
 } from '../../../ui/custom-fields/custom-outlined-text-field.component';
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import { loginThunk, selectAuthStateError, setInitialAuthState } from '../../../redux/auth';
 import { handleAuthError } from '../../../helper/error-handler/auth-error.handler';
 import { emailValidation } from '../../../helper/validation/auth.validation';
@@ -17,13 +15,10 @@ import { API_ROUTES, ROUTES } from '../../../App.constants';
 
 const SignInForm = () => {
   const { state } = useLocation();
-  const [loginField, setLoginField] = useState('Email');
 
-  const { control, handleSubmit, getValues, setValue, setError, unregister, clearErrors } = useForm(
-    {
-      mode: 'onBlur'
-    }
-  );
+  const { control, handleSubmit, getValues, setValue, setError, clearErrors } = useForm({
+    mode: 'onBlur'
+  });
   const { errors } = useFormState({ control });
 
   const error = useSelector(selectAuthStateError);
@@ -31,13 +26,6 @@ const SignInForm = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const changeLoginField = () => {
-    unregister('login');
-    setValue('login', '');
-
-    setLoginField(loginField === 'Email' ? 'Username' : 'Email');
-  };
 
   useEffect(() => {
     if (typeof field === 'string') {
@@ -52,7 +40,6 @@ const SignInForm = () => {
     dispatch(setInitialAuthState());
     clearErrors();
     if (state && state.type && state.login) {
-      setLoginField(state.type);
       setValue('login', state.login);
       window.history.replaceState({}, document.title);
     }
@@ -71,22 +58,9 @@ const SignInForm = () => {
         <CustomTextField
           control={control}
           name={'login'}
-          label={loginField === 'Email' ? 'Email' : 'Nickname'}
-          rules={
-            loginField === 'Email' ? emailValidation : { required: 'Nickname cannot be empty' }
-          }
+          label={'Email'}
+          rules={emailValidation}
           error={errors.login}
-          inputProps={{
-            startAdornment: (
-              <InputAdornment
-                title={loginField}
-                position={'start'}
-                onClick={changeLoginField}
-                sx={{ cursor: 'pointer' }}>
-                {loginField === 'Email' ? <AlternateEmailIcon /> : <AccountCircle />}
-              </InputAdornment>
-            )
-          }}
         />
         <CustomPasswordTextField
           control={control}
@@ -119,7 +93,7 @@ const SignInForm = () => {
               className="form-link cursor-pointer"
               onClick={() =>
                 navigate(ROUTES.forgotPassword, {
-                  state: { type: loginField, login: getValues('login') }
+                  state: { login: getValues('login') }
                 })
               }>
               Forgot Password?
@@ -143,7 +117,7 @@ const SignInForm = () => {
             className="form-link cursor-pointer"
             onClick={() =>
               navigate(ROUTES.signUp, {
-                state: { type: loginField, login: getValues('login') }
+                state: { login: getValues('login') }
               })
             }>
             {"Don't have an account? Sign up"}
