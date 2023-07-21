@@ -14,5 +14,5 @@ class User < ApplicationRecord
             :uniqueness => true
   validates :password,
             :presence => true,
-            length: { in: 4..50, :message => "Must be within 4 and 50" }
+            length: { in: 4..200, :message => "Must be within 4 and 200" }
 end
