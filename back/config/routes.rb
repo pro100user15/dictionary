@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     resources :user
     resources :theme_admin
     resources :theme
+    resources :tag
     resources :content
   end
 end
